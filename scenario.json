@@ -1,0 +1,323 @@
+{
+  "label": "互助站与街道登记门户",
+  "pages": [
+    {
+      "path": "/station",
+      "name": "互助站服务单",
+      "headings": [
+        "站点",
+        "服务单",
+        "老人编号",
+        "共同探访",
+        "代签人",
+        "分项",
+        "日期",
+        "时段",
+        "状态"
+      ],
+      "rows": [
+        [
+          [
+            "西桥站",
+            "X3",
+            "N-3",
+            "V-12",
+            "P-9",
+            "代取",
+            "2026-11-19",
+            "09:00—09:20",
+            "已确认"
+          ],
+          [
+            "西桥站",
+            "X4",
+            "N-3",
+            "V-12",
+            "P-9",
+            "代取",
+            "2026-11-19",
+            "09:00—09:20",
+            "已确认"
+          ],
+          [
+            "东桥站",
+            "E4",
+            "N-3",
+            "V-13",
+            "P-9",
+            "陪诊",
+            "2026-11-19",
+            "11:30—12:10",
+            "待签署"
+          ]
+        ],
+        [
+          [
+            "西桥站",
+            "X3",
+            "N-3",
+            "V-12",
+            "P-9",
+            "代取",
+            "2026-11-19",
+            "09:00—09:20",
+            "代理范围待更正"
+          ],
+          [
+            "西桥站",
+            "X4",
+            "N-3",
+            "V-12",
+            "P-9",
+            "代取",
+            "2026-11-19",
+            "09:00—09:20",
+            "代理范围待更正"
+          ],
+          [
+            "东桥站",
+            "E4",
+            "N-3",
+            "V-13",
+            "P-9",
+            "陪诊",
+            "2026-11-19",
+            "11:30—12:10",
+            "已确认"
+          ]
+        ]
+      ],
+      "forms": [
+        {
+          "path": "/station/confirm",
+          "name": "登记街道办理号",
+          "fields": {
+            "stationSheet": "服务单",
+            "requestKey": "互助站经办号",
+            "receipt": "街道办理号"
+          }
+        }
+      ]
+    },
+    {
+      "path": "/consent",
+      "name": "代理授权与转站确认",
+      "headings": [
+        "老人编号",
+        "代签人",
+        "适用事项",
+        "起止时刻",
+        "连续服务凭证"
+      ],
+      "rows": [
+        [
+          [
+            "N-3",
+            "P-9",
+            "代取、陪诊",
+            "08:00—12:30",
+            "PAX-9"
+          ]
+        ],
+        [
+          [
+            "N-3",
+            "P-9",
+            "陪诊",
+            "10:30—12:30",
+            "PAX-9"
+          ]
+        ]
+      ],
+      "forms": []
+    },
+    {
+      "path": "/street",
+      "name": "街道探访登记",
+      "headings": [
+        "老人编号",
+        "探访编号",
+        "类别",
+        "日期",
+        "办理号"
+      ],
+      "rows": [
+        [
+          [
+            "N-3",
+            "V-10",
+            "助餐",
+            "2026-11-19",
+            "J-08"
+          ]
+        ],
+        [
+          [
+            "N-3",
+            "V-10",
+            "助餐",
+            "2026-11-19",
+            "J-08"
+          ]
+        ]
+      ],
+      "forms": [
+        {
+          "path": "/street/register",
+          "name": "提交探访登记",
+          "fields": {
+            "requestKey": "经办号",
+            "resident": "老人编号",
+            "visit": "探访编号",
+            "category": "类别",
+            "period": "日期与实际时段",
+            "summary": "提交摘要"
+          }
+        },
+        {
+          "path": "/street/revoke",
+          "name": "申请撤销",
+          "fields": {
+            "requestKey": "经办号",
+            "priorReceipt": "原办理号",
+            "reason": "撤销原因"
+          }
+        },
+        {
+          "path": "/street/find",
+          "name": "查询受理",
+          "fields": {
+            "requestKey": "经办号"
+          },
+          "method": "GET"
+        }
+      ]
+    }
+  ],
+  "routes": [
+    {
+      "method": "POST",
+      "path": "/street/register",
+      "note": "登记表单的确认页可能只有受理提示。经办号可原样查询。",
+      "steps": [
+        {
+          "fields": [
+            "requestKey",
+            "resident",
+            "visit",
+            "category",
+            "period",
+            "summary"
+          ],
+          "pendingUntil": 1,
+          "response": "receipt"
+        },
+        {
+          "fields": [
+            "requestKey",
+            "resident",
+            "visit",
+            "category",
+            "period",
+            "summary"
+          ],
+          "pendingUntil": 1,
+          "response": "receipt"
+        }
+      ],
+      "status": 200,
+      "kind": "json"
+    },
+    {
+      "method": "POST",
+      "path": "/street/revoke",
+      "note": "原办理号和撤销原因随撤销提交。",
+      "steps": [
+        {
+          "fields": [
+            "requestKey",
+            "priorReceipt",
+            "reason"
+          ],
+          "pendingUntil": 1,
+          "response": "receipt"
+        },
+        {
+          "fields": [
+            "requestKey",
+            "priorReceipt",
+            "reason"
+          ],
+          "pendingUntil": 1,
+          "response": "receipt"
+        }
+      ],
+      "status": 200,
+      "kind": "json"
+    },
+    {
+      "method": "POST",
+      "path": "/station/confirm",
+      "note": "互助站按服务单和街道办理号记载。",
+      "steps": [
+        {
+          "fields": [
+            "requestKey",
+            "stationSheet",
+            "receipt"
+          ],
+          "pendingUntil": 0,
+          "response": "receipt"
+        },
+        {
+          "fields": [
+            "requestKey",
+            "stationSheet",
+            "receipt"
+          ],
+          "pendingUntil": 0,
+          "response": "receipt"
+        }
+      ],
+      "status": 200,
+      "kind": "json"
+    },
+    {
+      "method": "GET",
+      "path": "/street/find",
+      "note": "可按当前经办号查询已受理记录和提交内容。",
+      "steps": [
+        {
+          "lookup": "receipt",
+          "key": "requestKey"
+        },
+        {
+          "lookup": "receipt",
+          "key": "requestKey"
+        }
+      ],
+      "status": 200,
+      "kind": "json"
+    }
+  ],
+  "browser": {
+    "page": "/street",
+    "heading": "街道探访登记",
+    "form": "提交探访登记",
+    "values": {
+      "经办号": "ST-TEST",
+      "老人编号": "N-8",
+      "探访编号": "V-40",
+      "类别": "助餐",
+      "日期与实际时段": "2026-11-19 09:20—10:20",
+      "提交摘要": "已确认探访"
+    },
+    "queryForm": "查询受理",
+    "query": {
+      "经办号": "ST-TEST"
+    },
+    "result": "待显示",
+    "changedPage": "/consent",
+    "changedText": "10:30—12:30"
+  }
+}
